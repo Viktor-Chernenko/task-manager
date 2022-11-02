@@ -16,6 +16,8 @@ module.exports = {
     // eslint-disable-next-line max-len
 
     rules: {
+        "vue/multi-word-component-names": "off", // Отключаем ограничение переименовывания компонента (Vue)
+        "vue/no-v-model-argument": "off", // Отключаем ограничение использование v-model с аргументом (Vue)
         "vue/require-prop-types": "error", // ! Обязательная валидация props
         "vue/no-multiple-template-root": "off", // Отключаем ограничение использование одного корневого тега в шаблоне Vue (это стало возможным во Vue3)
         "vue/attribute-hyphenation": ["error", "always"], //! Props пишем в стиле 'prop-name'
