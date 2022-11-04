@@ -3,7 +3,7 @@
  * @param {[Object]} tasksList - список задач.
  */
 export function setTasksListInLocalStorage(tasksList) {
-    localStorage.setItem("tasksList", JSON.stringify(tasksList));
+    localStorage.setItem("tasksLists", JSON.stringify(tasksList));
 }
 
 /**
@@ -11,7 +11,7 @@ export function setTasksListInLocalStorage(tasksList) {
  * @return {[Object]} tasksList - список задач.
  */
 export function getTasksListFromLocalStorage() {
-    const tasksList = JSON.parse(localStorage.getItem("tasksList"));
+    const tasksList = JSON.parse(localStorage.getItem("tasksLists"));
 
     return tasksList;
 }

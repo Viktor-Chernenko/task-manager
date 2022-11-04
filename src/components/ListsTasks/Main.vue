@@ -34,16 +34,14 @@
                 :tasks="listTasks.items"
                 :id-category="listTasks.id"
                 :change-categories-task="changeCategoriesTask"
-                @removeTask="removeTaskEmit"
+                :remove-task="removeTask"
             />
         </div>
     </div>
 </template>
 
 <script>
-import { useTabs } from "@/compositions/components/tabs";
-import { useRemoveTask } from "../../compositions/tasks-manager/delete-task";
-import { isNumber, isString } from "../../utils/data-type-check";
+import { useTabs } from "@/compositions/common/tabs";
 
 import ListTasks from "./List";
 
@@ -64,25 +62,15 @@ export default {
             required: true,
             default: () => {},
         },
-    },
 
-    emits: {
-        removeTask({ indexTask, idCategory }) {
-            const isCorrectIndex = isNumber(indexTask);
-            const isCorrectIdCategory =
-                isString(idCategory) && idCategory.length;
-
-            return isCorrectIndex && isCorrectIdCategory;
+        removeTask: {
+            type: Function,
+            required: true,
+            default: () => {},
         },
     },
 
-    setup(_, { emit }) {
-        /**
-         * API Удаление задач.
-         */
-
-        const { removeTaskEmit } = useRemoveTask(emit);
-
+    setup() {
         /**
          * API Tabs.
          */
@@ -90,7 +78,6 @@ export default {
         const { toggleCurrentTab, isCurrentTabIndex } = useTabs();
 
         return {
-            removeTaskEmit,
             toggleCurrentTab,
             isCurrentTabIndex,
         };

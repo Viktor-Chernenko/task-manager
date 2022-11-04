@@ -4,6 +4,16 @@ import {
     getTasksListFromLocalStorage,
 } from "../../../localStorage/tasks-manager";
 
+/**
+ * Инициализируем сущность "Списки задач".
+ * @returns API
+ * @returns {object} API.tasks - список всех категорий с задачами.
+ * @returns {array} API.arrayTasks - массив списка всех категорий с задачами.
+ * @returns {object} API.tasksCatagoriesIds - все идентификаторы категорий.
+ * @returns {function} API.addTask - метод добавления новой задачи.
+ * @returns {function} API.removeTask - метод удаления задачи.
+ * @returns {function} API.changeCategoriesTask - метод изменения категории задачи.
+ */
 export function useTaskList() {
     const tasksCatagoriesIds = {
         new: "new",
@@ -28,7 +38,6 @@ export function useTaskList() {
         },
     });
     const arrayTasks = computed(() => Object.values(tasks.value));
-    const numberOfAllTasksInCategory = computed(() => tasks.value.length);
 
     /**
      * Добавляем новую задачу.
@@ -38,7 +47,6 @@ export function useTaskList() {
      */
     function addTask({ title, description }) {
         const createData = getCreateData();
-        console.log(createData);
         tasks.value.new.items.push({ title, description, createData });
     }
 
@@ -107,7 +115,6 @@ export function useTaskList() {
         removeTask,
         tasks,
         arrayTasks,
-        numberOfAllTasksInCategory,
         tasksCatagoriesIds,
         changeCategoriesTask,
     };

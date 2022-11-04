@@ -1,6 +1,6 @@
 <template>
     <h3 class="mb-3">Добавить задачу</h3>
-    <form @submit.prevent="addTaskEmit">
+    <form @submit.prevent="addNewTask">
         <label class="form-label me-3">
             <span class="d-block mb-2">Заголовок</span>
             <input v-model="newTask.title" type="text" class="form-control" />
@@ -27,31 +27,26 @@
 
 <script>
 import { useAddTask } from "../../compositions/tasks-manager/add-task";
-import { isString } from "../../utils/data-type-check";
 
 export default {
-    emits: {
-        addTask({ title, description }) {
-            const isValidTitle = isString(title) && title.length;
-            const isValidDescription =
-                isString(description) && description.length;
-            const errorMsg = "Ошибка валидации emit 'addTask'";
-
-            if (!isValidTitle || !isValidDescription) {
-                console.warn(errorMsg);
-            }
-
-            return isValidTitle && isValidDescription;
+    props: {
+        addTask: {
+            type: Function,
+            required: true,
+            default: () => {},
         },
     },
 
-    setup(_, { emit }) {
+    setup(props) {
+        const { addTask } = props;
+
         /**
          * API Добавление задач.
          */
-        const { newTask, isFilledRequiredFields, addTaskEmit } = useAddTask(emit);
+        const { newTask, isFilledRequiredFields, addNewTask } =
+            useAddTask(addTask);
 
-        return { newTask, isFilledRequiredFields, addTaskEmit };
+        return { newTask, isFilledRequiredFields, addNewTask };
     },
 };
 </script>

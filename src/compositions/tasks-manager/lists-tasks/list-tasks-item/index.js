@@ -1,7 +1,23 @@
+import { computed } from "vue";
+
+/**
+ * Инициализируем сущность "Элемент списка задач".
+ * @param {object} tasksCatagoriesIds - все идентификаторы категорий.
+ * @param {string} idCategoryCurrent - идентификатор выбранной категории.
+ * @param {string} numberOfAllTasks - количество всего задач в категории.
+ * @param {number} indexListItem - индекс задачи.
+ *
+ * @returns API
+ * @returns {string} API.nextCategoryId - идентификатор следующей категории.
+ * @returns {string} API.textBtnChangeTask - текст для кнопки изменения задачи.
+ * @returns {boolean} API.notLastItemCheck - проверка является ли задача последней в списке задач.
+ *
+ */
 export function useListTasksItem(
-    numberOfAllTasks,
     tasksCatagoriesIds,
-    idCategoryCurrent
+    idCategoryCurrent,
+    numberOfAllTasks,
+    indexListItem
 ) {
     const nextCategoryId = getNextCategoryId();
     const textsBtnChange = {
@@ -10,15 +26,9 @@ export function useListTasksItem(
         default: "Изменить категорию",
     };
     const textBtnChangeTask = getTextBtnChangeTask();
-
-    /**
-     * Проверяем не является ли задача последней в списке задач.
-     * @param {number} indexTask - индекс задачи.
-     * @returns {boolean}
-     */
-    function notLastItemCheck(indexTask) {
-        return numberOfAllTasks !== indexTask + 1;
-    }
+    const notLastItemCheck = computed(
+        () => numberOfAllTasks.value !== indexListItem.value + 1
+    );
 
     /**
      * Получаем идентификатор следующей категории.
@@ -45,7 +55,7 @@ export function useListTasksItem(
     }
 
     /**
-     * Получаем текст для кнопки изменения.
+     * Получаем текст для кнопки изменения задачи.
      * @returns {string}
      */
     function getTextBtnChangeTask() {
@@ -60,8 +70,8 @@ export function useListTasksItem(
     }
 
     return {
-        notLastItemCheck,
         nextCategoryId,
         textBtnChangeTask,
+        notLastItemCheck,
     };
 }

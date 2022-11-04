@@ -1,7 +1,7 @@
 <template>
     <li
         class="list-group-item py-3 d-flex flex-column rounded"
-        :class="{ 'mb-2': notLastItemCheck(index) }"
+        :class="{ 'mb-2': notLastItemCheck }"
     >
         <div class="mb-3">
             <div class="d-flex mb-3">
@@ -19,7 +19,7 @@
             <delete-task
                 class="btn btn-secondary ms-auto"
                 :index-task="index"
-                @click="removeTaskEmit({ indexTask: index, idCategory })"
+                @click="removeTask({ indexTask: index, idCategory })"
             />
             <change-category-task
                 v-if="tasksCatagoriesIds.ready !== idCategory"
@@ -34,9 +34,7 @@
 <script>
 import { toRefs } from "vue";
 import { useTaskList } from "@/compositions/tasks-manager/lists-tasks";
-import { useRemoveTask } from "../../compositions/tasks-manager/delete-task";
 import { useListTasksItem } from "../../compositions/tasks-manager/lists-tasks/list-tasks-item";
-import { isNumber, isString } from "../../utils/data-type-check";
 
 import DeleteTask from "../DeleteTask/Main";
 import ChangeCategoryTask from "../CategoriesTasks/Buttons/Change";
@@ -77,28 +75,18 @@ export default {
             required: true,
             default: () => {},
         },
-    },
 
-    emits: {
-        removeTask({ indexTask, idCategory }) {
-            const isCorrectIndex = isNumber(indexTask);
-            const isCorrectIdCategory =
-                isString(idCategory) && idCategory.length;
-
-            return isCorrectIndex && isCorrectIdCategory;
+        removeTask: {
+            type: Function,
+            required: true,
+            default: () => {},
         },
     },
 
-    setup(props, { emit }) {
+    setup(props) {
         /** data */
 
-        const { numberOfAllTasks, idCategory } = toRefs(props);
-
-        /**
-         * API Удаление задач.
-         */
-
-        const { removeTaskEmit } = useRemoveTask(emit);
+        const { numberOfAllTasks, idCategory, index } = toRefs(props);
 
         /**
          * API список задач.
@@ -110,16 +98,16 @@ export default {
          * API элемент списка задач.
          */
 
-        const { notLastItemCheck, nextCategoryId, textBtnChangeTask } =
+        const { nextCategoryId, textBtnChangeTask, notLastItemCheck } =
             useListTasksItem(
-                numberOfAllTasks.value,
                 tasksCatagoriesIds,
-                idCategory.value
+                idCategory.value,
+                numberOfAllTasks,
+                index
             );
 
         return {
             notLastItemCheck,
-            removeTaskEmit,
             tasksCatagoriesIds,
             nextCategoryId,
             textBtnChangeTask,

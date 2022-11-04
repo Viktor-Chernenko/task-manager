@@ -1,12 +1,12 @@
 <template>
     <div class="mb-5">
-        <add-task-box @addTask="addTask" />
+        <add-task-box :add-task="addTask" />
     </div>
     <div class="mb-5">
         <list-tasks
             :lists-tasks="arrayTasks"
             :change-categories-task="changeCategoriesTask"
-            @removeTask="removeTask"
+            :remove-task="removeTask"
         />
     </div>
 </template>
