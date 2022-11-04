@@ -1,6 +1,6 @@
 <template>
     <h3 class="mb-3">Добавить задачу</h3>
-    <form @submit.prevent="addTask">
+    <form @submit.prevent="addTaskEmit">
         <label class="form-label me-3">
             <span class="d-block mb-2">Заголовок</span>
             <input v-model="newTask.title" type="text" class="form-control" />
@@ -49,9 +49,9 @@ export default {
         /**
          * API Добавление задач.
          */
-        const { newTask, isFilledRequiredFields, addTask } = useAddTask(emit);
+        const { newTask, isFilledRequiredFields, addTaskEmit } = useAddTask(emit);
 
-        return { newTask, isFilledRequiredFields, addTask };
+        return { newTask, isFilledRequiredFields, addTaskEmit };
     },
 };
 </script>

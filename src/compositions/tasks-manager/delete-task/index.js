@@ -5,17 +5,17 @@
  * @returns {function} API.removeTask - метод генерирующий событие "Удаление задачи".
  */
 export function useRemoveTask(emit) {
-    /** methods */
-
     /**
      * Генерируем событие "Удаление задачи".
-     * @param {number} indexTask - индекс задачи.
+     * @param {object} data
+     * @param {number} data.indexTask - индекс задачи.
+     * @param {string} data.idCategory - категория задачи.
      */
-    function removeTask(indexTask) {
-        emit("removeTask", indexTask);
+    function removeTaskEmit({ indexTask, idCategory }) {
+        emit("removeTask", { indexTask, idCategory });
     }
 
     return {
-        removeTask,
+        removeTaskEmit,
     };
 }

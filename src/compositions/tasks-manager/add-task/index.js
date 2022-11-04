@@ -12,39 +12,33 @@ import { reactive, computed } from "vue";
  * @returns {function} API.addTask - метод добавления формы.
  */
 export function useAddTask(emit) {
-    /** vars */
-
     const newTask = reactive({
         title: "",
         description: "",
     });
-
-    /** computed */
-
     const isFilledRequiredFields = computed(() => {
         return newTask.title.length && newTask.description.length;
     });
 
-    /** methods */
+    /**
+     * Добавляем новую задачу.
+     */
+    function addTaskEmit() {
+        emit("addTask", newTask);
+        resetForm();
+    }
 
     /**
-     * Сбрасываем данные формы. искренний
+     * Сбрасываем данные формы.
      */
     function resetForm() {
         newTask.title = "";
         newTask.description = "";
     }
-    /**
-     * Добавляем новую задачу.
-     */
-    function addTask() {
-        emit("addTask", newTask);
-        resetForm();
-    }
 
     return {
         newTask,
         isFilledRequiredFields,
-        addTask,
+        addTaskEmit,
     };
 }

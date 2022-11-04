@@ -3,15 +3,19 @@
         <add-task-box @addTask="addTask" />
     </div>
     <div class="mb-5">
-        <list-tasks :tasks="tasks" @removeTask="removeTask" />
+        <list-tasks
+            :lists-tasks="arrayTasks"
+            :change-categories-task="changeCategoriesTask"
+            @removeTask="removeTask"
+        />
     </div>
 </template>
 
 <script>
-import { useTaskListChanges } from "./compositions/tasks-manager/task-list-changes";
+import { useTaskList } from "./compositions/tasks-manager/lists-tasks";
 
 import AddTaskBox from "./components/AddTask/Main";
-import ListTasks from "./components/ListTasks/Main";
+import ListTasks from "./components/ListsTasks/Main";
 
 export default {
     components: {
@@ -21,11 +25,17 @@ export default {
 
     setup() {
         /**
-         * API Изменение списка задач.
+         * API Списка задач.
          */
-        const { tasks, addTask, removeTask } = useTaskListChanges();
+        const { arrayTasks, addTask, removeTask, changeCategoriesTask } =
+            useTaskList();
 
-        return { tasks, addTask, removeTask };
+        return {
+            arrayTasks,
+            addTask,
+            removeTask,
+            changeCategoriesTask,
+        };
     },
 };
 </script>
