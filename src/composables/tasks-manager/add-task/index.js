@@ -11,7 +11,7 @@ import { reactive, computed } from "vue";
  * @returns {boolean} API.isFilledRequiredFields - проверка заполнены ли обязательные поля формы.
  * @returns {function} API.addNewTask - метод добавления задачи.
  */
-export function useAddTask(addTask) {
+export function useAddTask(addTask = () => {}) {
     const newTask = reactive({
         title: "",
         description: "",

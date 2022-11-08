@@ -6,7 +6,7 @@ import { ref } from "vue";
  * @returns {object} API
  * @returns {number} API.currentTab - активный таб.
  * @returns {function} API.toggleCurrentTab - метод изменение активного таба.
- * @returns {function} API.toggleCurrentTab - метод определяет активный таб.
+ * @returns {function} API.defineCurrentTabIndex - метод определяет активный таб.
  */
 export function useTabs(indexCurrentTab = 0) {
     const currentTab = ref(indexCurrentTab);
@@ -24,9 +24,9 @@ export function useTabs(indexCurrentTab = 0) {
      * @param {number} index - индекс проверяемого элемента.
      * @returns {boolean}
      */
-    function isCurrentTabIndex(index) {
+    function defineCurrentTabIndex(index) {
         return currentTab.value === index;
     }
 
-    return { currentTab, toggleCurrentTab, isCurrentTabIndex };
+    return { currentTab, toggleCurrentTab, defineCurrentTabIndex };
 }

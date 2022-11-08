@@ -8,7 +8,7 @@
         >
             <button
                 class="nav-link text-white"
-                :class="{ active: isCurrentTabIndex(index) }"
+                :class="{ active: defineCurrentTabIndex(index) }"
                 data-bs-toggle="tab"
                 :data-bs-target="`#${listTasks.id}`"
                 type="button"
@@ -27,21 +27,25 @@
             :id="listTasks.id"
             :key="index"
             class="tab-pane fade"
-            :class="{ 'active show': isCurrentTabIndex(index) }"
+            :class="{ 'active show': defineCurrentTabIndex(index) }"
             role="tabpanel"
         >
             <list-tasks
                 :tasks="listTasks.items"
                 :id-category="listTasks.id"
                 :change-categories-task="changeCategoriesTask"
-                :remove-task="removeTask"
+                @deleteTask="emitDeleteTask"
+                @editedTask="emitEditedTask"
             />
         </div>
     </div>
 </template>
 
 <script>
-import { useTabs } from "@/compositions/common/tabs";
+import { useTabs } from "@/composables/common/tabs";
+import { useEditTask } from "@/composables/tasks-manager/edit-task";
+import { useDeleteTask } from "@/composables/tasks-manager/delete-task";
+import { isNumber } from "@/utils/data-type-check";
 
 import ListTasks from "./List";
 
@@ -62,24 +66,56 @@ export default {
             required: true,
             default: () => {},
         },
+    },
 
-        removeTask: {
-            type: Function,
-            required: true,
-            default: () => {},
+    emits: {
+        editedTask({ indexTask, idCategory, editableTask }) {
+            const { title, description } = editableTask;
+            const isCorrectIndexTask = isNumber(indexTask);
+            const isCorrectIdCategory = idCategory.length;
+            const isCorrectTitle = title.length;
+            const isCorrectDescription = description.length;
+
+            return (
+                isCorrectIndexTask &&
+                isCorrectIdCategory &&
+                isCorrectTitle &&
+                isCorrectDescription
+            );
+        },
+
+        deleteTask({ indexTask, idCategory }) {
+            const isCorrectIndexTask = isNumber(indexTask);
+            const isCorrectIdCategory = idCategory.length;
+
+            return isCorrectIndexTask && isCorrectIdCategory;
         },
     },
 
-    setup() {
+    setup(_, { emit }) {
         /**
          * API Tabs.
          */
 
-        const { toggleCurrentTab, isCurrentTabIndex } = useTabs();
+        const { toggleCurrentTab, defineCurrentTabIndex } = useTabs();
+
+        /**
+         * API изменения задачи.
+         */
+
+        const { emitEditedTask } = useEditTask(emit);
+
+        /**
+         * API удаление задачи.
+         */
+
+        const { emitDeleteTask } = useDeleteTask(emit);
 
         return {
             toggleCurrentTab,
-            isCurrentTabIndex,
+            defineCurrentTabIndex,
+            emitEditedTask,
+            emitDeleteTask,
         };
     },
 };

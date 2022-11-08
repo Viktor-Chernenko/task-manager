@@ -9,7 +9,7 @@ import { computed } from "vue";
  *
  * @returns API
  * @returns {string} API.nextCategoryId - идентификатор следующей категории.
- * @returns {string} API.textBtnChangeTask - текст для кнопки изменения задачи.
+ * @returns {string} API.textBtnChangeCatagoriesTask - текст для кнопки изменения задачи категории.
  * @returns {boolean} API.notLastItemCheck - проверка является ли задача последней в списке задач.
  *
  */
@@ -25,7 +25,7 @@ export function useListTasksItem(
         [tasksCatagoriesIds.isProgress]: "Завершить задачу",
         default: "Изменить категорию",
     };
-    const textBtnChangeTask = getTextBtnChangeTask();
+    const textBtnChangeCatagoriesTask = getTextBtnChangeCatagoriesTask();
     const notLastItemCheck = computed(
         () => numberOfAllTasks.value !== indexListItem.value + 1
     );
@@ -55,10 +55,10 @@ export function useListTasksItem(
     }
 
     /**
-     * Получаем текст для кнопки изменения задачи.
+     * Получаем текст для кнопки изменения категории задачи.
      * @returns {string}
      */
-    function getTextBtnChangeTask() {
+    function getTextBtnChangeCatagoriesTask() {
         switch (idCategoryCurrent) {
             case tasksCatagoriesIds.new:
                 return textsBtnChange[tasksCatagoriesIds.new];
@@ -71,7 +71,7 @@ export function useListTasksItem(
 
     return {
         nextCategoryId,
-        textBtnChangeTask,
+        textBtnChangeCatagoriesTask,
         notLastItemCheck,
     };
 }

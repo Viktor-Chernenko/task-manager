@@ -6,16 +6,17 @@
         <list-tasks
             :lists-tasks="arrayTasks"
             :change-categories-task="changeCategoriesTask"
-            :remove-task="removeTask"
+            @deleteTask="deleteTask"
+            @editedTask="updateTask"
         />
     </div>
 </template>
 
 <script>
-import { useTaskList } from "./compositions/tasks-manager/lists-tasks";
+import { useTasksLists } from "@/composables/tasks-manager/lists-tasks";
 
-import AddTaskBox from "./components/AddTask/Main";
-import ListTasks from "./components/ListsTasks/Main";
+import AddTaskBox from "@/components/AddTask/Main";
+import ListTasks from "@/components/ListsTasks/Main";
 
 export default {
     components: {
@@ -27,13 +28,19 @@ export default {
         /**
          * API Списка задач.
          */
-        const { arrayTasks, addTask, removeTask, changeCategoriesTask } =
-            useTaskList();
+        const {
+            arrayTasks,
+            addTask,
+            deleteTask,
+            updateTask,
+            changeCategoriesTask,
+        } = useTasksLists();
 
         return {
             arrayTasks,
             addTask,
-            removeTask,
+            deleteTask,
+            updateTask,
             changeCategoriesTask,
         };
     },
